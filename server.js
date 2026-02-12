@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import salesRoutes from "./routes/salesRoutes.js";
+import procurementRoutes from "./routes/procurementRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -17,6 +18,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/sales", salesRoutes);
+app.use("/api/procurement", procurementRoutes);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)
