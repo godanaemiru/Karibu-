@@ -40,3 +40,17 @@ cd Karibu-
 
 # Install dependencies
 npm install
+
+## 🔐 Demo Credentials
+
+You can explore the different dashboards using the accounts below. Each role provides access to specific features (Analytics for Directors, Procurement for Managers, POS for Agents).
+
+| Role | Username | Password | Branch Access |
+| :--- | :--- | :--- | :--- |
+| **Director** | `orban` | `123456` | All Branches (Global) |
+| **Manager** | `manager_maganjo` | `123456` | Maganjo Branch |
+| **Manager** | `manager_matugga` | `123456` | Matugga Branch |
+| **Sales Agent** | `agent_maganjo` | `123456` | Maganjo Branch |
+| **Sales Agent** | `agent_matugga` | `123456` | Matugga Branch |
+
+> **Note:** These users are pre-seeded in the database via the `seed.js` script.
