@@ -1,11 +1,25 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
+// Define the User Schema
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true, minlength: 2 },
-  role: { type: String, enum: ["director", "manager", "agent"], required: true },
-  branch: { type: String },
-  phone: String,
-  password: { type: String, required: true }
+    username: { 
+        type: String, 
+        required: true, 
+        unique: true 
+    },
+    password: { 
+        type: String, 
+        required: true 
+    },
+    role: { 
+        type: String, 
+        required: true,
+        enum: ['director', 'manager', 'agent'] 
+    },
+    branch: { 
+        type: String 
+    }
 });
 
-export default mongoose.model("User", userSchema);
+// EXPORT THE MODEL (This is the part that was missing/causing the error)
+module.exports = mongoose.model('User', userSchema);

@@ -1,41 +1,47 @@
-import express from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-
+const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const User = require('../models/User');
 
-router.post("/register", async (req, res) => {
-  const { name, role, branch, password } = req.body;
+// POST: /api/auth/login
+router.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
 
-  const hashed = await bcrypt.hash(password, 10);
+        // 1. Check if user exists
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({ message: "User not found" });
+        }
 
-  const user = await User.create({
-    name,
-    role,
-    branch,
-    password: hashed
-  });
+        // 2. Validate Password (Compare plain text to Hash)
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
 
-  res.json(user);
+        // 3. Login Success - Send back user info
+        // (In a real app, you would sign a JWT token here)
+        res.json({
+            message: "Login Successful",
+            token: "fake-jwt-token-123", // Mock token for now
+            role: user.role,
+            branch: user.branch
+        });
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-router.post("/login", async (req, res) => {
-  const { name, password } = req.body;
-
-  const user = await User.findOne({ name });
-  if (!user) return res.status(400).json({ message: "User not found" });
-
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.status(400).json({ message: "Wrong password" });
-
-  const token = jwt.sign(
-    { id: user._id, role: user.role, branch: user.branch },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" }
-  );
-
-  res.json({ token, role: user.role });
+// GET: Fetch all users (Staff List) - Excludes passwords
+router.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({}, '-password'); // '-password' hides the hash
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-export default router;
+module.exports = router;

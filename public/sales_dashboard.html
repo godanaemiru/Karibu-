@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Agent | Karibu Groceries</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* --- Karibu Theme Colors --- */
+      :root {
+        --primary: #1b5e20; /* Deep Green */
+        --accent: #fbc02d; /* Maize Gold */
+        --bg: #f4f6f8;
+        --white: #ffffff;
+        --text-dark: #2c3e50;
+        --danger: #c62828; /* Red for Credit/Debt */
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        background: var(--bg);
+        display: flex;
+        min-height: 100vh;
+        color: var(--text-dark);
+      }
+
+      /* Sidebar ( consistent with other pages ) */
+      .sidebar {
+        width: 260px;
+        background: var(--primary);
+        color: var(--white);
+        padding: 2rem;
+        position: fixed;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand {
+        font-size: 1.5rem;
+        margin-bottom: 3rem;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-weight: 600;
+      }
+
+      .agent-profile {
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 1rem;
+      }
+
+      .nav-links {
+        list-style: none;
+      }
+      .nav-links li {
+        margin-bottom: 1rem;
+      }
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 8px;
+        transition: 0.3s;
+      }
+      .nav-links a.active {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 2rem;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      /* Card Styling */
+      .card {
+        background: var(--white);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        max-width: 800px;
+        margin: 0 auto; /* Center the form */
+      }
+
+      h2 {
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+      }
+
+      /* Toggle Switch for Credit */
+      .toggle-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        padding: 15px;
+        background: #e8f5e9; /* Light Green Bg */
+        border-radius: 8px;
+        border: 1px solid #c8e6c9;
+      }
+
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+      }
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: var(--danger); /* Red for Credit */
+      }
+      input:checked + .slider:before {
+        transform: translateX(24px);
+      }
+
+      /* Form Grid */
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .input-group input,
+      .input-group select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.3s;
+      }
+
+      .input-group input:focus,
+      .input-group select:focus {
+        border-color: var(--primary);
+      }
+
+      /* Buttons */
+      .btn-sell {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 8px;
+        width: 100%;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 30px;
+        transition: background 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn-sell:hover {
+        background: #144a17;
+      }
+
+      .btn-sell.credit-mode {
+        background: var(--danger); /* Red button for credit sales */
+      }
+      .btn-sell.credit-mode:hover {
+        background: #b71c1c;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="sidebar">
+      <div class="brand">
+        <i class="fas fa-leaf" style="color: var(--accent)"></i>
+        Karibu POS
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <a href="#" class="active"
+            ><i class="fas fa-cash-register"></i> New Sale</a
+          >
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-history"></i> Sales History</a>
+        </li>
+      </ul>
+
+      <div class="agent-profile">
+        <p style="font-size: 0.85rem; opacity: 0.8">Signed in as:</p>
+        <p style="font-weight: 600; margin-bottom: 10px" id="agentName">
+          Loading...
+        </p>
+        <button
+          onclick="logout()"
+          style="
+            color: var(--accent);
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          "
+        >
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <div class="header">
+        <div>
+          <h1 style="font-size: 1.5rem">Point of Sale</h1>
+          <p style="color: #666; font-size: 0.9rem">
+            Branch: <span id="branchName">Maganjo</span>
+          </p>
+        </div>
+        <div style="font-size: 1.2rem; font-weight: 600; color: var(--primary)">
+          <i class="fas fa-calendar-alt"></i> <span id="todayDate"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="toggle-container" id="toggleContainer">
+          <label class="toggle-switch">
+            <input
+              type="checkbox"
+              id="creditToggle"
+              onchange="toggleCreditMode()"
+            />
+            <span class="slider"></span>
+          </label>
+          <div>
+            <span id="saleTypeLabel" style="font-weight: 600; display: block"
+              >Cash Sale</span
+            >
+            <span id="saleTypeDesc" style="font-size: 0.8rem; color: #666"
+              >Standard transaction (Stock reduced immediately)</span
+            >
+          </div>
+        </div>
+
+        <form id="salesForm">
+          <div class="form-grid">
+            <div class="input-group">
+              <label>Select Produce</label>
+              <select id="pName" required>
+                <option value="" disabled selected>-- Choose Item --</option>
+                <option value="Maize">Maize</option>
+                <option value="Beans">Beans</option>
+                <option value="Soybeans">Soybeans</option>
+                <option value="Cowpeas">Cowpeas</option>
+                <option value="G-Nuts">G-Nuts</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label>Tonnage (kg)</label>
+              <input
+                type="number"
+                id="pTonnage"
+                placeholder="e.g. 50"
+                required
+                min="1"
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Amount Paid (UgX)</label>
+              <input
+                type="number"
+                id="amount"
+                placeholder="e.g. 50000"
+                required
+                min="500"
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Buyer Name</label>
+              <input
+                type="text"
+                id="buyer"
+                placeholder="Customer Name"
+                required
+                minlength="2"
+              />
+            </div>
+
+            <div class="input-group credit-field" style="display: none">
+              <label>Buyer Contact</label>
+              <input type="tel" id="contact" placeholder="07..." />
+            </div>
+            <div class="input-group credit-field" style="display: none">
+              <label>National ID (NIN)</label>
+              <input type="text" id="nin" placeholder="CM..." />
+            </div>
+            <div class="input-group credit-field" style="display: none">
+              <label>Due Date</label>
+              <input type="date" id="dueDate" />
+            </div>
+            <div class="input-group credit-field" style="display: none">
+              <label>Location</label>
+              <input type="text" id="location" placeholder="Village/Town" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-sell" id="submitBtn">
+            <i class="fas fa-check-circle"></i> Complete Sale
+          </button>
+        </form>
+        <div
+          style="
+            margin-top: 3rem;
+            border-top: 1px solid #eee;
+            padding-top: 2rem;
+          "
+        >
+          <h3 style="color: var(--primary); margin-bottom: 1rem">
+            Recent Transactions
+          </h3>
+          <table
+            style="width: 100%; border-collapse: collapse; font-size: 0.9rem"
+          >
+            <thead>
+              <tr style="background: #f8f9fa; text-align: left">
+                <th style="padding: 10px">Date</th>
+                <th style="padding: 10px">Produce</th>
+                <th style="padding: 10px">Buyer</th>
+                <th style="padding: 10px">Amount</th>
+                <th style="padding: 10px">Type</th>
+              </tr>
+            </thead>
+            <tbody id="salesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    // --- TOAST FUNCTION ---
+    const notify = (msg, type = 'success') => {
+        Toastify({
+            text: msg,
+            duration: 4000,
+            close: true,
+            gravity: "bottom", // Bottom for POS is better
+            position: "center", // Center for visibility
+            style: {
+                background: type === 'success' ? "#1b5e20" : "#b71c1c",
+                fontSize: "1.1rem",
+                borderRadius: "50px",
+                padding: "12px 24px"
+            }
+        }).showToast();
+    };
+
+    // ... (Keep existing agent/branch setup) ...
+    const agent = localStorage.getItem('username');
+    const branch = localStorage.getItem('branch');
+
+    document.getElementById('salesForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const isCredit = document.getElementById('creditToggle').checked;
+        
+        // ... (Gather data logic) ...
+        const data = {
+            produceName: document.getElementById('pName').value,
+            tonnage: parseInt(document.getElementById('pTonnage').value),
+            amountPaid: parseInt(document.getElementById('amount').value),
+            buyerName: document.getElementById('buyer').value,
+            agentName: agent,
+            branch: branch,
+            type: isCredit ? 'Credit' : 'Cash',
+            // ... add credit fields if needed ...
+        };
+
+        try {
+            const res = await fetch('/api/sales/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                notify(`Sale Successful! Stock Updated. ✅`);
+                e.target.reset();
+                if(isCredit) toggleCreditMode(); // Reset UI
+            } else {
+                notify(result.message || "Transaction Failed ❌", "error");
+            }
+        } catch (err) {
+            notify("System Error. Check Network.", "error");
+        }
+    });
+</script>
+  </body>
+</html>

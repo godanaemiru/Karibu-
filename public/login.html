@@ -1,57 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>KGL Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Karibu Groceries LTD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --dark-green: #1b5e20;
+            --maize-yellow: #f9a825;
+            --overlay-color: rgba(0, 0, 0, 0.65);
+        }
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-  <style>
-    body {
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Background Image: Sacks of grain/produce */
+            background: url('https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover;
+        }
 
-    .login-card {
-      width: 100%;
-      max-width: 400px;
-      border-radius: 15px;
-    }
-  </style>
+        /* Dark Overlay to make text readable */
+        .background-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--overlay-color);
+            z-index: 1;
+        }
+
+        .login-card {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            border-top: 5px solid var(--primary-green);
+        }
+
+        .brand-logo {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-green);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px 12px 45px; /* Space for icon */
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-green);
+        }
+
+        button.btn-login {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button.btn-login:hover {
+            background: var(--dark-green);
+        }
+
+        .footer-text {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Error Message Styling */
+        #errorMsg {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            border: 1px solid #ef9a9a;
+            display: none; /* Hidden by default */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .login-card {
+                margin: 20px;
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="card shadow-lg login-card p-4">
-  <div class="text-center mb-3">
-    <h3 class="fw-bold text-primary">Karibu Groceries LTD</h3>
-    <p class="text-muted">Inventory & Sales System</p>
-  </div>
+    <div class="background-overlay"></div>
 
-  <div class="mb-3">
-    <label class="form-label">Username</label>
-    <input type="text" id="name" class="form-control" placeholder="Enter username">
-  </div>
+    <div class="login-card">
+        <div class="login-header">
+            <i class="fas fa-seedling brand-logo"></i>
+            <h2>Karibu Groceries</h2>
+            <p>Digitizing the Black Books</p>
+        </div>
 
-  <div class="mb-3">
-    <label class="form-label">Password</label>
-    <input type="password" id="password" class="form-control" placeholder="Enter password">
-  </div>
+        <div id="errorMsg"></div>
 
-  <button onclick="login(event)" class="btn btn-primary w-100">
-    Login
-  </button>
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Username" required autocomplete="off">
+            </div>
 
-  <div class="text-center mt-3">
-    <small class="text-muted">© 2026 KGL System</small>
-  </div>
-</div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
 
-<script src="js/app.js"></script>
+            <button type="submit" class="btn-login">
+                Access Portal
+            </button>
+        </form>
+
+        <div class="footer-text">
+            &copy; 2024 Karibu Groceries LTD<br>
+            <span style="color: var(--maize-yellow)">•</span> Maganjo & Matugga Branches <span style="color: var(--maize-yellow)">•</span>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value.trim(); // .trim() removes accidental spaces
+        const password = document.getElementById('password').value.trim();
+        const errorEl = document.getElementById('errorMsg');
+
+        // Reset error message
+        errorEl.style.display = 'none';
+
+        try {
+            // 1. Send data to backend
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+
+            // 2. Check for success
+            if (res.ok) {
+                // Save session data
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.role);
+                localStorage.setItem('branch', data.branch);
+                localStorage.setItem('username', username); // Save username for display
+
+                // --- 3. ROLE BASED REDIRECT LOGIC ---
+                switch(data.role) {
+                    case 'director':
+                        window.location.href = '/director_dashboard.html';
+                        break;
+                    case 'manager':
+                        window.location.href = '/manager.html';
+                        break;
+                    case 'agent':
+                        window.location.href = '/sales_dashboard.html';
+                        break;
+                    default:
+                        showError("Unknown Role. Contact Admin.");
+                }
+                // ------------------------------------
+
+            } else {
+                showError(data.message || "Login Failed");
+            }
+
+        } catch (err) {
+            console.error(err);
+            showError("Server Error. Is the backend running?");
+        }
+
+        function showError(msg) {
+            errorEl.innerText = msg;
+            errorEl.style.display = 'block';
+            errorEl.style.background = '#ffebee';
+            errorEl.style.color = '#c62828';
+            errorEl.style.borderColor = '#ef9a9a';
+        }
+    });
+</script>
 </body>
 </html>

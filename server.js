@@ -1,25 +1,41 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import connectDB from "./config/db.js";
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path'); // Ensure this is required
 
-import authRoutes from "./routes/authRoutes.js";
-import salesRoutes from "./routes/salesRoutes.js";
-import procurementRoutes from "./routes/procurementRoutes.js";
-
-dotenv.config();
-connectDB();
+// Import Routes
+const stockRoutes = require('./routes/stockRoutes');
+const salesRoutes = require('./routes/salesRoutes');
+const authRoutes = require('./routes/authRoutes'); 
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/api/auth", authRoutes);
-app.use("/api/sales", salesRoutes);
-app.use("/api/procurement", procurementRoutes);
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server running on port ${process.env.PORT}`)
-);
+
+app.use(express.static(path.join(__dirname, 'public'))); 
+
+// Database Connection
+// Use the secure cloud database string, OR local if testing
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/kgl_database')
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
+
+// Routes
+app.use('/api/stock', stockRoutes);
+app.use('/api/sales', salesRoutes);
+app.use('/api/auth', authRoutes); 
+
+// Default Redirect
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// ... other imports
