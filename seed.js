@@ -7,7 +7,7 @@ const Produce = require('./models/Produce');
 const Sale = require('./models/Sale');
 
 // Connect to DB
-mongoose.connect('mongodb://localhost:27017/kgl_database')
+mongoose.connect('mongodb://localhost:27017/kgl_database' && 'mongodb+srv://kgl_admin:123@cluster0.hnbaipv.mongodb.net/kgl_database?appName=Cluster0')
     .then(() => console.log("🌱 Connected to Mongo. Seeding started..."))
     .catch(err => console.log(err));
 
