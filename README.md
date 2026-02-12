@@ -2,7 +2,7 @@
 
 A modern, full-stack inventory management solution designed to digitize the "Black Books" of produce retailers. Karibu Groceries enables real-time tracking of stock procurement, sales, and branch performance.
 
-![Karibu Demo](demo.gif)
+![Karibu Demo](Godana.gif)
 
 ## 🚀 Live Demo
 Check out the live application on Render: [**https://karibu-ri5b.onrender.com**](https://karibu-ri5b.onrender.com)
